@@ -44,7 +44,8 @@ export const Search = ({ setModal }) => {
                         maxHeight: Dimensions.get('window').height / 7
                     } : {}}
                     keyExtractor={item => item.id.toString()}
-                    data={value.trim() ? regions : []}
+                    // data={value.trim() ? regions : []}
+                    data={value.trim() ? regions.filter(item => item.country.indexOf(value) === 0) : []}
                     renderItem={({ item }) => {
                         if (myRegions?.find(e => e.id === item.id)) {
                             return null;
@@ -54,7 +55,7 @@ export const Search = ({ setModal }) => {
                                 <Checkbox
                                     onCheck={(e) => {
                                         dispatch(setCheckboxCreator(item.id));
-                                        setValue(regions?.filter(e => e.checked).map(e => e.state + ', ' + e.country).join(' + '));
+                                        // setValue(regions?.filter(e => e.checked).map(e => e.state + ', ' + e.country).join(' + '));
                                     }}
                                     label={item.state + ', ' + item.country}
                                     value="agree"
@@ -69,6 +70,7 @@ export const Search = ({ setModal }) => {
                         disabled={!regions.some(e => e.checked)}
                         text="ADD"
                         onPress={() => {
+                            console.warn(regions.filter(item => item.country.indexOf(value) === 0));
                             dispatch(addMyRegionsCreator(regions?.filter(e => e.checked)));
                             dispatch(getRegionsCreator());
                             setModal(false);
